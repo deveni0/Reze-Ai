@@ -159,12 +159,14 @@ async function copy() {
   msg("تم نسخ الكود - بانتظار الربط...", "ok");
 }
 
-btn.onclick = submit;
-input.onkeydown = e => e.key === "Enter" && submit();
-codeEl.onclick = copy;
-document.onvisibilitychange = () => {
+btn.addEventListener("click", submit);
+input.addEventListener("keydown", e => {
+  if (e.key === "Enter") submit();
+});
+codeEl.addEventListener("click", copy);
+document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") refreshCount();
-};
+});
 
 refreshCount();
 setInterval(refreshCount, 3000);
