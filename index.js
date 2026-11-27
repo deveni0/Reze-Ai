@@ -26,17 +26,28 @@ const client = new Client({
   // pairing code
   login: {
     method: "pair",
-    number: "966569688912",
+
+    number: "67572486447",
+
+    number: "84933807000",
     code: "REZE1234",
   },
 
   // owners
   owners: [
-    { jid: "966575252858@s.whatsapp.net", lid: "269144427626750@lid" },
-    { jid: "966567158348@s.whatsapp.net", lid: "230919638098013@lid" },
-    { jid: "201066826750@s.whatsapp.net", lid: "247579682029763@lid" },
+    
+    { jid: "9647831000007@s.whatsapp.net", lid: "269144427626750@lid" },
+    { jid: "967775061789@s.whatsapp.net", lid: "230919638098013@lid" },
+    { jid: "966583820297@s.whatsapp.net", lid: "247579682029763@lid" },
     { lid: "1838246064203@lid" },
     { jid: "201027439894@s.whatsapp.net", lid: "140656605450455@lid" },
+    
+    { jid: "9647831000007@s.whatsapp.net", lid: "9647831000007@lid" },
+    { jid: "9647831000007@s.whatsapp.net", lid: "9647831000007@lid" },
+    { jid: "9647831000007@s.whatsapp.net", lid: "9647831000007@lid" },
+    { lid: "9647831000007@lid" },
+    { jid: "9647831000007@s.whatsapp.net", lid: "140656605450455@lid" },
+
     { username: "T7_14" },  
   ],
 
@@ -63,7 +74,7 @@ config.info = {
     forwardedNewsletterMessageInfo: {
       newsletterJid: "120363225356834044@newsletter",
       newsletterName: "𝐔𝐧𝐢𝐨𝐧 ~ 𝐕𝐈𝐈𝟕",
-      serverMessageId: 0,
+      serverMessageId: 1,
     },
   },
   newsletter: {
@@ -79,14 +90,13 @@ config.info = {
 };
 
 /* ========== Send the error to owner ======== */
-
-const conn = client.sock;
-const owner = client.owners?.[0]?.jid;
-
 client.on("error", async (err) => {
+  const conn = client.sock;
+  const owner = client.owners?.[0]?.jid;
+
   if (!conn || !owner) return;
 
-  const errorText = String(err?.stack || err?.message || err).slice(0, 3500);
+  const errorText = String(err?.stack || err?.message || err);
 
   try {
     await conn.sendMessage(owner, { text: errorText });
@@ -94,6 +104,7 @@ client.on("error", async (err) => {
     console.error("Failed to send error:", e);
   }
 });
+
 
 /* ========== Notification ======== */
 
@@ -104,7 +115,8 @@ plugins.notification(notifications);
 
 const start = async () => {
   await client.connect();
-  await subBots(client);
+    await subBots(client);
+
   await subs.start();
   await startApi(client, subs);
   console.log("✅ Installer API started on port 26165");
