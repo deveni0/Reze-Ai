@@ -1,8 +1,8 @@
 import { Client } from "meowsab";
 import { subBots, subs } from "./system/sub.js";
+import { api } from "./system/api.js";
 import "meowsab/safe";
 import "./system/database.js";
-import { startApi } from "./system/api.js";
 import * as baileys from "baileys";
 import notifications from "./system/notifications.js";
 import path from "node:path";
@@ -99,15 +99,13 @@ client.on("error", async (err) => {
 
 const plugins = client.plug();
 plugins.notification(notifications);
-
-/* ========== Starting ======== */
+/* ========== Starting & Server ======== */
 
 const start = async () => {
   await client.connect();
   await subBots(client);
-  await subs.start();
-  await startApi(client, subs);
-  console.log("✅ Installer API started on port 26165");
+  await subs.start()
+  await api({ client, subs })
 };
 
 start().catch((err) => {
